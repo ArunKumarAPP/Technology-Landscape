@@ -1,0 +1,401 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Recruiting Bootcamp – UI + Wireframe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* ========== DESIGN TOKENS (Visual) ========== */
+    :root{
+      --bg:#0f1220; --surface:#171a2b; --surface-2:#1d2240;
+      --text:#e9ecf7; --muted:#b7bed3; --brand:#5e8bff; --brand2:#00c2a8;
+      --border:#2a314a; --radius:14px; --shadow:0 12px 40px rgba(0,0,0,.35);
+      --fs-1:clamp(28px,4vw,44px); --fs-2:clamp(22px,2.8vw,32px); --fs-3:clamp(16px,2vw,20px);
+      --container:1120px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f7f8fb; --surface:#ffffff; --surface-2:#f2f4ff; --text:#0e1528; --muted:#5a627a; --brand:#2952ff; --brand2:#008d7b; --border:#e5e9f2; --shadow:0 8px 28px rgba(35,65,150,.15); }
+    }
+
+    /* ========== BASE ========== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 18% -10%, rgba(94,139,255,.15), transparent 40%),
+        radial-gradient(1200px 800px at 85% 10%, rgba(0,194,168,.14), transparent 40%),
+        var(--bg);
+      color:var(--text);
+    }
+    .container{max-width:var(--container); margin:0 auto; padding:0 24px}
+    a{color:inherit; text-decoration:none}
+
+    /* ========== HEADER ========== */
+    header.site-header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter: blur(14px);
+      background: color-mix(in oklab, var(--surface) 92%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .header-wrap{display:flex; align-items:center; justify-content:space-between; min-height:70px; gap:18px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700}
+    .logo{width:36px; height:36px; border-radius:12px; background:linear-gradient(135deg, var(--brand), var(--brand2)); box-shadow:var(--shadow)}
+    nav ul{display:flex; gap:16px; list-style:none; margin:0; padding:0}
+    .header-cta{display:flex; gap:10px}
+    .btn{display:inline-block; border:1px solid var(--border); padding:10px 14px; border-radius:12px; background:var(--surface); color:var(--text); font-weight:600}
+    .btn--primary{border:none; background:linear-gradient(135deg, var(--brand), var(--brand2)); color:#fff; box-shadow:var(--shadow)}
+    .btn:hover{filter:brightness(1.06)}
+
+    /* ========== HERO ========== */
+    .hero{padding:60px 0 36px; background: radial-gradient(600px 300px at 18% 25%, rgba(94,139,255,.12), transparent 60%), radial-gradient(700px 320px at 82% 22%, rgba(0,194,168,.12), transparent 60%)}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
+    .h1{font-size:var(--fs-1); margin:0 0 8px}
+    .lead{color:var(--muted); font-size:var(--fs-3); margin:0 0 18px}
+    .hero-actions{display:flex; gap:12px; margin:16px 0 24px}
+    .stats{display:flex; gap:16px; flex-wrap:wrap}
+    .stat{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 16px; min-width:160px}
+    .stat .num{font-size:28px; font-weight:800}
+    .stat .lbl{color:var(--muted); font-size:13px}
+    .hero-art{position:relative}
+    .orb{width:100%; max-width:420px; margin:0 auto; display:block; filter: drop-shadow(0 30px 40px rgba(0,0,0,.35))}
+
+    /* ========== SECTIONS ========== */
+    .section{padding:56px 0}
+    .section.alt{background: color-mix(in oklab, var(--surface-2) 78%, transparent); border-top:1px solid var(--border); border-bottom:1px solid var(--border)}
+    .section-head{margin-bottom:18px}
+    .h2{font-size:var(--fs-2); margin:0 0 6px}
+    .muted{color:var(--muted)}
+
+    /* ========== GRID CARDS ========== */
+    .features{display:grid; grid-template-columns: repeat(3,1fr); gap:14px}
+    .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
+    .card .icon{font-size:22px; margin-bottom:6px}
+
+    /* ========== ACCORDION / CURRICULUM ========== */
+    .accordion{display:grid; gap:10px}
+    details.acc{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
+    details.acc > summary{list-style:none; cursor:pointer; padding:14px 16px; display:flex; gap:12px}
+    details.acc > summary::-webkit-details-marker{display:none}
+    details.acc > summary small{color:var(--muted); margin-left:auto}
+    details.acc[open] > summary{border-bottom:1px dashed var(--border)}
+    details.acc ul{margin:0; padding: 12px 20px 16px 34px}
+    details.acc li{margin:6px 0}
+
+    /* ========== VALUE / PRICING / FAQ / CONTACT ========== */
+    .values{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+    .pricing{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .price-card{display:flex; flex-direction:column; gap:12px}
+    .price{font-size:32px; font-weight:800; margin-top:6px}
+    .faq{display:grid; gap:10px}
+    .faq details{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:10px 14px}
+    .contact-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:16px}
+    form.contact{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
+    .row{display:flex; flex-direction:column; margin-bottom:12px}
+    label{font-weight:600; margin-bottom:6px}
+    input, select, textarea{background: color-mix(in oklab, var(--surface) 85%, white 15%); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text)}
+    input:focus, select:focus, textarea:focus{outline:2px solid color-mix(in oklab, var(--brand) 60%, white 40%)}
+    .aside .card{min-height:120px}
+
+    /* ========== FOOTER ========== */
+    .site-footer{padding:28px 0; border-top:1px solid var(--border); background: color-mix(in oklab, var(--surface) 92%, transparent)}
+    .footer-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:center}
+    .footer-links{display:flex; gap:12px; list-style:none; margin:0; padding:0}
+    .footer-links a{opacity:.85} .footer-links a:hover{opacity:1}
+
+    .gradient{background:linear-gradient(135deg, var(--brand), var(--brand2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width:1000px){
+      .hero-grid{grid-template-columns:1fr}
+      .features{grid-template-columns:repeat(2,1fr)}
+      .values{grid-template-columns:repeat(2,1fr)}
+      .pricing{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      nav{display:none} .header-cta{display:none}
+      .features,.values{grid-template-columns:1fr}
+    }
+
+    /* ===================================================== */
+    /* ================== WIREFRAME MODE =================== */
+    /* ===================================================== */
+    /* Toggle by adding .wireframe to <html> or <body> */
+    .wireframe body{
+      background:#f6f7f9 !important; color:#222 !important;
+    }
+    .wireframe .site-header,
+    .wireframe .section,
+    .wireframe .card,
+    .wireframe details.acc,
+    .wireframe form.contact,
+    .wireframe .site-footer{
+      background:#fff !important;
+      border:1.5px solid #bfc5d6 !important;
+      box-shadow:none !important;
+    }
+    .wireframe .logo{background:#cbd3e6 !important; box-shadow:none !important}
+    .wireframe .btn,
+    .wireframe .btn--primary{
+      background:#fff !important; color:#222 !important; border:1.5px solid #bfc5d6 !important; box-shadow:none !important;
+    }
+    .wireframe .gradient{color:#222 !important; background:none !important}
+    .wireframe .orb{display:none}
+    .wireframe .muted{color:#616a80 !important}
+    .wireframe .stat{background:#fff !important; border:1.5px solid #bfc5d6 !important}
+    .wireframe .icon::before{
+      content:"▢"; display:inline-block; width:18px; height:18px; border:1.5px solid #bfc5d6; margin-right:6px; vertical-align:middle;
+    }
+    .wireframe nav ul li a{color:#222 !important; opacity:1}
+    .wireframe details.acc > summary{position:relative}
+    .wireframe details.acc > summary small{color:#616a80 !important}
+    .wireframe details.acc[open] > summary{border-bottom:1px dashed #bfc5d6 !important}
+    /* Placeholder bars inside cards (helps convey structure) */
+    .wireframe .card p,
+    .wireframe .faq p{
+      position:relative; padding-left:0;
+    }
+    .wireframe .card p::after,
+    .wireframe .faq p::after{
+      content:""; display:block; height:8px; background: repeating-linear-gradient(90deg, #e7eaf3, #e7eaf3 60px, #f3f5fb 60px, #f3f5fb 120px);
+      border:1px solid #dde2ee; border-radius:6px; margin-top:8px;
+    }
+    /* Wireframe labels */
+    .wf-label{
+      display:inline-block; font-size:12px; color:#616a80; background:#eef1f7; border:1px solid #bfc5d6; border-radius:999px; padding:4px 8px; margin:6px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-wrap">
+      #home
+        <span class="logo" aria-hidden="true"></span>
+        <span>Recruiting Bootcamp</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul>
+          <li>#programProgram</a></li>
+          <li>#curriculumCurriculum</a></li>
+          <li>#outcomesOutcomes</a></li>
+          <li>#pricingPricing</a></li>
+          <li>#faqFAQ</a></li>
+        </ul>
+      </nav>
+      <div class="header-cta">
+        <button class="btn" id="wfToggle" aria-pressed="false">🧩 Wireframe Mode</button>
+        #enrollEnroll Now</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1 class="h1">Recruitment Redefined: <span class="gradient">Master the Art, Science, & Strategy</span></h1>
+          <p class="lead">A compact, industry-grade bootcamp designed for high-impact hiring—from legacy foundations to AI/ML, DevOps, and enterprise platforms.</p>
+          <div class="hero-actions">
+            #enrollGet Started</a>
+            #curriculumView Curriculum</a>
+          </div>
+          <div class="stats" aria-label="program stats">
+            <div class="stat"><div class="num">15</div><div class="lbl">Structured Modules</div></div>
+            <div class="stat"><div class="num">30+</div><div class="lbl">Tools & Frameworks</div></div>
+            <div class="stat"><div class="num">4–6</div><div class="lbl">Weeks to Proficiency</div></div>
+          </div>
+          <div class="wf-label">Hero (Copy + CTA + Stats)</div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg class="orb" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#7aa2ff"/><stop offset="50%" stop-color="#51dac8"/><stop offset="100%" stop-color="#2f2e41"/></radialGradient></defs>
+            <circle cx="100" cy="100" r="90" fill="url(#g)"/>
+          </svg>
+          <div class="wf-label">Hero Art (Decorative)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAM HIGHLIGHTS -->
+    <section class="section" id="program">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Program Highlights</h2>
+          <p class="muted">Built for TA leaders and recruiters—hands-on, outcome-driven, future-proof.</p>
+        </div>
+        <div class="features">
+          <article class="card"><div class="icon">🎯</div><h3>Role-Centric Learning</h3><p>Map competencies to BA, PO/PM, Scrum Master, Systems Analyst.</p><span class="wf-label">Card</span></article>
+          <article class="card"><div class="icon">⚙️</div><h3>Modern Engineering</h3><p>APIs, microservices, DevOps, containers, cloud security.</p><span class="wf-label">Card</span></article>
+          <article class="card"><div class="icon">📊</div><h3>Data-Driven TA</h3><p>SQL/NoSQL, ETL/ELT, warehousing—to screen tech talent well.</p><span class="wf-label">Card</span></article>
+          <article class="card"><div class="icon">🧠</div><h3>AI & GenAI Essentials</h3><p>Non-tech overview, prompt engineering, product integration.</p><span class="wf-label">Card</span></article>
+          <article class="card"><div class="icon">🛡️</div><h3>Security First</h3><p>IAM, AppSec, CloudSec, SOC/SIEM fundamentals.</p><span class="wf-label">Card</span></article>
+          <article class="card"><div class="icon">🏢</div><h3>Enterprise Platforms</h3><p>ERP/CRM/HCM, RPA, integration (MuleSoft, Boomi, TIBCO).</p><span class="wf-label">Card</span></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CURRICULUM (15 MODULES) -->
+    <section class="section" id="curriculum">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Curriculum</h2>
+          <p class="muted">15 modules — expand for topics.</p>
+        </div>
+
+        <div class="accordion">
+          <details class="acc" open>
+            <summary><span>1) Foundations & Legacy Technologies</span><small>SDLC, Mainframe, Client–Server, SQL</small></summary>
+            <ul>
+              <li>Introduction to Software & SDLC</li>
+              <li>COBOL & Mainframe Basics</li>
+              <li>AS/400 & Legacy System Concepts</li>
+              <li>Client–Server Architecture</li>
+              <li>Databases & SQL Fundamentals</li>
+            </ul>
+          </details>
+          <details class="acc"><summary><span>2) Business Roles & Product Roles</span><small>BA, Systems Analyst, PO/PM, Scrum</small></summary><ul><li>BA / Systems Analyst</li><li>Product Owner / Product Manager</li><li>Scrum Master / Agile Coach</li></ul></details>
+          <details class="acc"><summary><span>3) Software Development Basics</span><small>Langs, FE/BE/FS, APIs</small></summary><ul><li>C, C++, Java, .NET, Python, JavaScript</li><li>Frontend vs Backend vs Full‑Stack</li><li>API Basics (REST, SOAP)</li></ul></details>
+          <details class="acc"><summary><span>4) UI/UX & Design</span><small>Wireframing, Prototyping, Accessibility</small></summary><ul><li>UI vs UX</li><li>Wireframing (Figma, Sketch)</li><li>Prototyping</li><li>Design Systems & Accessibility</li><li>Interaction & Product Design</li></ul></details>
+          <details class="acc"><summary><span>5) Modern Frontend Technologies</span><small>HTML/CSS/JS, React/Angular/Vue</small></summary><ul><li>HTML/CSS/JS</li><li>React, Angular, Vue</li><li>Responsive & Performance</li></ul></details>
+          <details class="acc"><summary><span>6) Backend & Server-Side</span><small>Java, .NET, Node, Python, PHP</small></summary><ul><li>Java/Spring Boot, .NET Core</li><li>Node.js, Django/Flask</li><li>PHP/Laravel</li><li>Microservices</li></ul></details>
+          <details class="acc"><summary><span>7) Databases & Data Tech</span><small>SQL, NoSQL, DWH, Big Data</small></summary><ul><li>Oracle, MySQL, PostgreSQL, SQL Server</li><li>MongoDB, Cassandra, DynamoDB</li><li>Data Warehousing, ETL/ELT</li><li>Hadoop, Spark</li></ul></details>
+          <details class="acc"><summary><span>8) Cloud Technologies</span><small>AWS, Azure, GCP</small></summary><ul><li>IaaS, PaaS, SaaS</li><li>AWS / Azure / GCP services</li><li>Cloud Migration, Security Basics</li></ul></details>
+          <details class="acc"><summary><span>9) DevOps & Automation</span><small>CI/CD, Docker, K8s, IaC</small></summary><ul><li>Jenkins, GitLab, GitHub</li><li>Docker, Kubernetes</li><li>Terraform, Ansible</li><li>Grafana, Prometheus</li></ul></details>
+          <details class="acc"><summary><span>10) AI/ML & Data Science (Non-Tech)</span><small>GenAI, Prompts, Tools</small></summary><ul><li>AI vs ML</li><li>Generative AI & Prompt Engineering</li><li>TensorFlow, PyTorch, OpenAI</li><li>AI in Products</li></ul></details>
+          <details class="acc"><summary><span>11) Cybersecurity Overview</span><small>Network, AppSec, CloudSec, IAM</small></summary><ul><li>Network & AppSec</li><li>Cloud Security</li><li>SIEM, SOC</li><li>IAM</li></ul></details>
+          <details class="acc"><summary><span>12) Testing & Quality Engineering</span><small>Manual, Automation, API, Perf</small></summary><ul><li>Manual</li><li>Selenium, Cypress</li><li>Postman (API)</li><li>JMeter (Perf)</li><li>Pen Testing</li></ul></details>
+          <details class="acc"><summary><span>13) Enterprise Systems & Platforms</span><small>ERP, CRM, HCM, RPA, iPaaS</small></summary><ul><li>SAP, Oracle</li><li>Salesforce, MS Dynamics</li><li>Workday, Oracle HCM</li><li>MuleSoft, Boomi, TIBCO</li><li>UiPath, Automation Anywhere</li></ul></details>
+          <details class="acc"><summary><span>14) Emerging Technologies</span><small>Blockchain, IoT, AR/VR, Robotics, Quantum</small></summary><ul><li>Blockchain</li><li>IoT</li><li>AR/VR</li><li>Robotics & Autonomous</li><li>Quantum Basics</li></ul></details>
+          <details class="acc"><summary><span>15) Industry-Specific Trends</span><small>BFSI, Healthcare, Retail, Telecom, Manufacturing</small></summary><ul><li>BFSI</li><li>Healthcare</li><li>Retail & E‑Commerce</li><li>Telecom</li><li>Manufacturing</li></ul></details>
+        </div>
+        <div class="wf-label">Accordion (Curriculum)</div>
+      </div>
+    </section>
+
+    <!-- OUTCOMES -->
+    <section class="section alt" id="outcomes">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Outcomes</h2>
+          <p class="muted">What you’ll achieve by the end of this bootcamp.</p>
+        </div>
+        <div class="values">
+          <article class="card"><h3>Hire with Precision</h3><p>Assess technical roles confidently across legacy, modern, and cloud-native stacks.</p><span class="wf-label">Card</span></article>
+          <article class="card"><h3>Stakeholder Trust</h3><p>Speak the language of engineering, product, and security to align hiring with delivery.</p><span class="wf-label">Card</span></article>
+          <article class="card"><h3>Faster Time-to-Fill</h3><p>Streamlined screening and reduced interview cycles.</p><span class="wf-label">Card</span></article>
+          <article class="card"><h3>Career Acceleration</h3><p>Portfolio and playbook to elevate your TA practice.</p><span class="wf-label">Card</span></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Pricing</h2>
+          <p class="muted">Flexible options for teams and individuals.</p>
+        </div>
+        <div class="pricing">
+          <article class="card price-card">
+            <div>
+              <h3>Starter</h3><p class="muted">For individuals</p><div class="price">$299</div>
+            </div>
+            <ul>
+              <li>Access to all 15 modules</li><li>Templates</li><li>Email support</li>
+            </ul>
+            #enrollChoose Plan</a>
+          </article>
+          <article class="card price-card">
+            <div>
+              <h3>Professional</h3><p class="muted">Best for small teams</p><div class="price">$699</div>
+            </div>
+            <ul>
+              <li>Team access (up to 5)</li><li>Live Q&A</li><li>Certificate</li>
+            </ul>
+            #enrollChoose Plan</a>
+          </article>
+          <article class="card price-card">
+            <div>
+              <h3>Enterprise</h3><p class="muted">Custom for orgs</p><div class="price">Custom</div>
+            </div>
+            <ul>
+              <li>Private cohorts</li><li>Role-specific tracks</li><li>Onsite/virtual</li>
+            </ul>
+            #contactTalk to Us</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="h2">Frequently Asked Questions</h2>
+          <p class="muted">Quick answers to common queries.</p>
+        </div>
+        <div class="faq">
+          <details><summary>Is this suitable for non-technical recruiters?</summary><p>Yes. The content helps recruiters speak confidently with engineering, product, and security teams.</p></details>
+          <details><summary>How long does the bootcamp take?</summary><p>Typically 4–6 weeks depending on your pace. Enterprise cohorts can be 2–3 week sprints.</p></details>
+          <details><summary>Do you provide certification?</summary><p>Professional and Enterprise include certification and a portfolio-ready capstone.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / ENROLL -->
+    <section class="section alt" id="enroll">
+      <div class="container contact-grid">
+        <div>
+          <h2 class="h2">Ready to Elevate Your Hiring?</h2>
+          <p class="muted">Share details and we’ll reach out with schedules and onboarding.</p>
+          #
+            <div class="row"><label for="name">Full Name</label><input id="name" name="name" type="text" placeholder="Your name" required /></div>
+            <div class="row"><label for="email">Work Email</label><input id="email" name="email" type="email" placeholder="you@company.com" required /></div>
+            <div class="row"><label for="plan">Plan</label><select id="plan" name="plan"><option>Starter</option><option>Professional</option><option>Enterprise</option></select></div>
+            <div class="row"><label for="msg">Notes</label><textarea id="msg" name="message" rows="4" placeholder="Timelines, team size, etc."></textarea></div>
+            <button class="btn btn--primary" type="submit">Submit</button>
+          </form>
+          <div class="wf-label">Contact Form</div>
+        </div>
+        <aside class="aside">
+          <div class="card"><h3>Need a demo?</h3><p>We can run a 30‑minute virtual walkthrough tailored to your roles (BA, PO/PM, Dev, QA, SecOps).</p></div>
+          <div class="card"><h3>Contact</h3><p class="muted">Arun Kumar Madduru • Talent Acquisition Manager</p><p>Hyderabad, Telangana</p></div>
+          <div class="wf-label">Aside (Info Cards)</div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Recruiting Bootcamp</span>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="footer-links">
+          <li>#programProgram</a></li>
+          <li>#curriculumCurriculum</a></li>
+          <li>#pricingPricing</a></li>
+          <li>#faqFAQ</a></li>
+          <li>#enrollEnroll</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Wireframe toggle (adds .wireframe to <html>)
+    const wfBtn = document.getElementById('wfToggle');
+    wfBtn.addEventListener('click', ()=>{
+      const isOn = document.documentElement.classList.toggle('wireframe');
+      wfBtn.setAttribute('aria-pressed', String(isOn));
+    });
+  </script>
+</body>
+</html>
